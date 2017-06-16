@@ -46,7 +46,7 @@ namespace BandTracker
         return View["concerts_form.cshtml"];
       };
       Post["/concerts/new"] = _ => {
-        Concert newConcert = new Concert(Request.Form["concert-showDate"], Request.Form["concert-venueId"]);
+        Concert newConcert = new Concert(Request.Form["concert-showDate"], Request.Form["venue-id"]);
         newConcert.Save();
         return View["index.cshtml"];
       };

@@ -10,7 +10,14 @@
       <div class="concert">
         @foreach (var concert in Model)
         {
-          <a href='/concerts/@concert.GetId()'><h3>Name: @concert.GetShowDate()</h3></a>
+          <a href='/concerts/@concert.GetId()'><h3>ShowDate: @concert.GetShowDate()</h3></a>
+          <ol>
+            @foreach (var venue in @Model["allVenues"])
+            {
+              <li value='@venue.GetId()'>@venue.GetName()</li>
+            }
+          </ol>
+
           <a href="/concert/edit/@concert.GetId()"><p class="btn">Edit</p></a>   <a href="/concert/delete/@concert.GetId()"><p class="btn">Delete</p></a><hr />
         }
       </div>

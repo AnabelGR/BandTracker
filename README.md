@@ -21,7 +21,7 @@ This web application will allow a salon to book bands with a venue.
 |Delete a venue. |Delete venue: Fillmore Theater|A delete function. |
 |Update a venue's name. |Find venue: Fillmore Theater, update to Roseland Theater|An update function. |
 |View all venues. |venues: Fillmore Theater, Roseland Theater, Revolution Hall|View the full list of venues in the database. |
-|View a venue's details, bands. |venue: Fillmore Theater |View the full list of venues in the database. |
+|View a venue's bands. |venue: Fillmore Theater |View the full list of venues in the database. |
 |Link a venue to a band. |venue: Fillmore Theater, band: Faith No More|A one to one database relationship. |
 |Link a venue to several bands. |venue: Fillmore Theater, bands: Faith No More, Harvey|A one to many database relationship. |
 
@@ -36,9 +36,9 @@ To recreate the databases using SQLCMD in powershell on a windows operating syst
 
 Navigate to the folder in your Windows powershell and run {dnu restore} to compile the file then run {dnx kestrel} to start the web server. In your web browser address bar, navigate to {//localhost:5004} to get to the home page.
 
-<!-- ## Known Bugs
+## Known Bugs
 
-* Having homemodule.cs routing issues. -->
+* Having homemodule.cs routing issues with bands to concerts link.
 
 ## Support and contact details
 
