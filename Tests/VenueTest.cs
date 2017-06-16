@@ -16,7 +16,7 @@ namespace BandTracker
     }
 
     [Fact]
-    public void GetAll_GetsCountOfVenues_DatabaseEmpty()
+    public void GetAll_GetsVenues_DatabaseEmpty()
     {
       //Arrange, Act
       int result = Venue.GetAll().Count;
@@ -27,6 +27,15 @@ namespace BandTracker
     public void Dispose()
     {
       Venue.DeleteAll();
+    }
+    [Fact]
+    public void Equals_ChecksObjectEquality_True()
+    {
+      //Arrange, Act
+      Venue firstVenue = new Venue("Roseland");
+      Venue secondVenue = new Venue("Roseland");
+      //Assert
+      Assert.Equal(firstVenue, secondVenue);
     }
   }
 }
