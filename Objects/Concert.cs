@@ -9,12 +9,10 @@ namespace BandTracker.Objects
   {
     private int _id;
     private DateTime _showDate;
-    private int _bands_id;
 
-  public Concert(int BandId, DateTime ShowDate, int Id = 0)
+  public Concert(DateTime ShowDate, int Id = 0)
   {
     _id = Id;
-    _bands_id = BandId;
     _showDate = ShowDate;
   }
 
@@ -28,9 +26,8 @@ namespace BandTracker.Objects
     {
       Concert newConcert = (Concert) otherConcert;
       bool idEquality = (this.GetId() == newConcert.GetId());
-      bool bandIdEquality = (this.GetBandId() == newConcert.GetBandId());
       bool showDateEquality = (this.GetShowDate() == newConcert.GetShowDate());
-      return (idEquality && bandIdEquality && showDateEquality);
+      return (idEquality && showDateEquality);
     }
   }
     public int GetId()
@@ -41,18 +38,14 @@ namespace BandTracker.Objects
     {
       _id = Id;
     }
-    public int GetBandId()
-    {
-      return _bands_id;
-    }
-    public void SetBandId(int BandId)
-    {
-      _bands_id = BandId;
-    }
     public DateTime GetShowDate()
     {
       return _showDate;
     }
+    // public void SetShowDate(DateTime ShowDate)
+    // {
+    //   _showDate = ShowDate;
+    // }
 
   public static void DeleteAll()
   {
@@ -76,9 +69,8 @@ namespace BandTracker.Objects
     {
       int concertId = rdr.GetInt32(0);
       DateTime concertShowDate = rdr.GetDateTime(1);
-      int concertBandId = rdr.GetInt32(2);
 
-      Concert newConcert = new Concert(concertBandId, concertShowDate, concertId);
+      Concert newConcert = new Concert(concertShowDate, concertId);
       allConcerts.Add(newConcert);
     }
 
@@ -97,17 +89,11 @@ namespace BandTracker.Objects
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO concerts (showDate, bands_id) OUTPUT INSERTED.id VALUES (@ConcertShowDate, @BandId);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO concerts (showDate) OUTPUT INSERTED.id VALUES (@ConcertShowDate);", conn);
       SqlParameter showDateParameter = new SqlParameter();
       showDateParameter.ParameterName = "@ConcertShowDate";
       showDateParameter.Value = this.GetShowDate();
-
-      SqlParameter bandIdParameter = new SqlParameter();
-      bandIdParameter.ParameterName = "@BandId";
-      bandIdParameter.Value = this.GetBandId();
-
       cmd.Parameters.Add(showDateParameter);
-      cmd.Parameters.Add(bandIdParameter);
 
       SqlDataReader rdr = cmd.ExecuteReader();
 
@@ -137,16 +123,14 @@ namespace BandTracker.Objects
       SqlDataReader rdr = cmd.ExecuteReader();
 
       int foundConcertId = 0;
-      int foundConcertBandId = 0;
       DateTime foundConcertShowDate = default(DateTime);
 
       while(rdr.Read())
       {
         foundConcertId = rdr.GetInt32(0);
         foundConcertShowDate = rdr.GetDateTime(1);
-        foundConcertBandId = rdr.GetInt32(2);
       }
-      Concert foundConcert = new Concert(foundConcertBandId, foundConcertShowDate, foundConcertId);
+      Concert foundConcert = new Concert(foundConcertShowDate, foundConcertId);
 
       if (rdr != null)
       {
@@ -158,17 +142,17 @@ namespace BandTracker.Objects
       }
       return foundConcert;
       }
-      public void AddGoer(Goer newGoer)
+      public void AddBand(Band newBand)
       {
         SqlConnection conn = DB.Connection();
         conn.Open();
 
-        SqlCommand cmd = new SqlCommand("INSERT INTO concerts_goers (goers_id, concerts_id) VALUES (@GoerId, @ConcertId);", conn);
+        SqlCommand cmd = new SqlCommand("INSERT INTO concerts_bands (bands_id, concerts_id) VALUES (@BandId, @ConcertId);", conn);
 
-        SqlParameter GoerIdParameter = new SqlParameter();
-        GoerIdParameter.ParameterName = "@GoerId";
-        GoerIdParameter.Value = newGoer.GetId();
-        cmd.Parameters.Add(GoerIdParameter);
+        SqlParameter BandIdParameter = new SqlParameter();
+        BandIdParameter.ParameterName = "@BandId";
+        BandIdParameter.Value = newBand.GetId();
+        cmd.Parameters.Add(BandIdParameter);
 
         SqlParameter ConcertIdParameter = new SqlParameter();
         ConcertIdParameter.ParameterName = "@ConcertId";
@@ -183,12 +167,12 @@ namespace BandTracker.Objects
         }
       }
 
-      public List<Goer> GetGoers()
+      public List<Band> GetBands()
       {
         SqlConnection conn = DB.Connection();
         conn.Open();
 
-        SqlCommand cmd = new SqlCommand("SELECT goers.* FROM concerts JOIN concerts_goers ON (concerts.id = concerts_goers.concerts_id) JOIN goers ON (concerts_goers.goers_id = goers.id) WHERE concerts.id = @ConcertId;", conn);
+        SqlCommand cmd = new SqlCommand("SELECT bands.* FROM concerts JOIN concerts_bands ON (concerts.id = concerts_bands.concerts_id) JOIN bands ON (concerts_bands.bands_id = bands.id) WHERE concerts.id = @ConcertId;", conn);
 
         SqlParameter ConcertIdParameter = new SqlParameter();
         ConcertIdParameter.ParameterName = "@ConcertId";
@@ -198,15 +182,15 @@ namespace BandTracker.Objects
 
         SqlDataReader rdr = cmd.ExecuteReader();
 
-        List<Goer> goers = new List<Goer>{};
+        List<Band> bands = new List<Band>{};
 
         while(rdr.Read())
         {
-          int goertId = rdr.GetInt32(0);
-          string goerName = rdr.GetString(1);
+          int bandId = rdr.GetInt32(0);
+          string bandName = rdr.GetString(1);
 
-          Goer newGoer = new Goer(goerName, goertId);
-          goers.Add(newGoer);
+          Band newBand = new Band(bandName, bandId);
+          bands.Add(newBand);
         }
 
         if(rdr != null)
@@ -217,7 +201,7 @@ namespace BandTracker.Objects
         {
           conn.Close();
         }
-        return goers;
+        return bands;
       }
 
       public void Delete()
@@ -225,9 +209,9 @@ namespace BandTracker.Objects
         SqlConnection conn = DB.Connection();
         conn.Open();
 
-        SqlCommand cmd = new SqlCommand("DELETE FROM concerts WHERE id = @BandId; DELETE FROM concerts_goers WHERE concerts_id = @BandId;", conn);
+        SqlCommand cmd = new SqlCommand("DELETE FROM concerts WHERE id = @ConcertId; DELETE FROM concerts_bands WHERE concerts_id = @ConcertId;", conn);
         SqlParameter concertIdParameter = new SqlParameter();
-        concertIdParameter.ParameterName = "@BandId";
+        concertIdParameter.ParameterName = "@ConcertId";
         concertIdParameter.Value = this.GetId();
 
         cmd.Parameters.Add(concertIdParameter);

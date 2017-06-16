@@ -1,0 +1,33 @@
+
+@{
+  Layout="Shared/_Layout.cshtml";
+}
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h2>Goer: @Model["goer"].GetName()</h2>
+    <hr />
+    @if (@Model["concertGoers"].Count != 0)
+    {
+      <h4>This fan has been to these concerts:</h4>
+      <ul>
+        @foreach (var concert in @Model["concertGoers"])
+        {
+          <li>@concert.GetBandId()</li>
+        }
+      </ul>
+    }
+    <hr />
+    <h4>Add a concert:</h4>
+    <form action='/goer/add_concert' method='post'>
+      <input id='goer-id' name='goer-id' type='hidden' value='@Model["goer"].GetId()'>
+      <label for='concert-id'>Select a concert</label>
+      <select id='concert-id' name='concert-id' type='text'>
+        @foreach (var concert in @Model["allConcerts"])
+        {
+          <option value='@concert.GetId()'>@concert.GetBandId()</option>
+        }
+      </select>
+      <button type='submit' class="btn">Add</button>
+    </form>
+  </div>
+</div>

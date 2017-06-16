@@ -260,5 +260,67 @@ namespace BandTracker.Objects
         conn.Close();
       }
     }
+    public void AddConcert(Concert newConcert)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("INSERT INTO concerts_bands (concerts_id, bands_id) VALUES (@ConcertId, @BandId);", conn);
+
+      SqlParameter ConcertIdParameter = new SqlParameter();
+      ConcertIdParameter.ParameterName = "@ConcertId";
+      ConcertIdParameter.Value = newConcert.GetId();
+      cmd.Parameters.Add(ConcertIdParameter);
+
+      SqlParameter BandIdParameter = new SqlParameter();
+      BandIdParameter.ParameterName = "@BandId";
+      BandIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(BandIdParameter);
+
+      cmd.ExecuteNonQuery();
+
+      if(conn != null)
+      {
+        conn.Close();
+      }
+    }
+
+    public List<Concert> GetConcerts()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT concerts.* FROM bands JOIN concerts_bands ON (bands.id = concerts_bands.bands_id) JOIN concerts ON (concerts_bands.concerts_id = concerts.id) WHERE bands.id = @BandId;", conn);
+
+      SqlParameter BandIdParameter = new SqlParameter();
+      BandIdParameter.ParameterName = "@BandId";
+      BandIdParameter.Value = this.GetId().ToString();
+
+      cmd.Parameters.Add(BandIdParameter);
+
+      SqlDataReader rdr = cmd.ExecuteReader();
+
+      List<Concert> concerts = new List<Concert>{};
+
+      while(rdr.Read())
+      {
+        int concertId = rdr.GetInt32(0);
+        DateTime concertShowDate = rdr.GetDateTime(1);
+
+        Concert newConcert = new Concert(concertShowDate, concertId);
+        concerts.Add(newConcert);
+      }
+
+      if(rdr != null)
+      {
+        rdr.Close();
+      }
+      if(conn != null)
+      {
+        conn.Close();
+      }
+      return concerts;
+    }
+
   }
 }

@@ -1,0 +1,22 @@
+@{
+  Layout="Shared/_Layout.cshtml";
+}
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h2>Edit concert: @Model.GetShowDate()</h2>
+    <form action="/concert/edit/@Model.GetId()" method="post">
+      <input type="hidden" name="_method" value="PATCH">
+      <input name="concert-id" type="hidden" value="@Model.GetId()">
+      <label for="concert-showDate">Concert Show Date</label>
+      <input id="concert-showDate" name="concert-showDate" type="date">
+      <label for='band-id'>Select a band</label>
+      <select id='band-id' name='band-id' type='text'>
+        @foreach (var band in @Model["allBands"])
+        {
+          <option value='@band.GetId()'>@band.GetName()</option>
+        }
+      </select>
+      <button class="btn" type="submit">Submit</button>
+    </form>
+  </div>
+</div>
