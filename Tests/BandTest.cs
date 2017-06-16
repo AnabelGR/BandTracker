@@ -63,7 +63,7 @@ namespace BandTracker
       testBand.Save();
 
       Venue firstVenue = new Venue("Star Theater");
-      Venue secondVenue = new Venue("Filmore");
+      Venue secondVenue = new Venue("Fillmore");
       firstVenue.Save();
       secondVenue.Save();
       //Add
@@ -98,6 +98,27 @@ namespace BandTracker
     {
       Band.DeleteAll();
       Venue.DeleteAll();
+    }
+    [Fact]
+    public void Delete_DeletesBandAssociationsFromDatabase_BandList()
+    {
+      //Arrange
+      Venue testVenue = new Venue("Roseland");
+      testVenue.Delete();
+
+      Band testBand = new Band("GWAR");
+      testBand.Save();
+
+
+      //Act
+      testBand.AddVenue(testVenue);
+      testBand.Delete();
+
+      List<Band> result = testVenue.GetBands();
+      List<Band> test = new List<Band> {};
+
+      //Assert
+      Assert.Equal(test, result);
     }
   }
 }
