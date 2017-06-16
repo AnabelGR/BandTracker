@@ -11,13 +11,6 @@
         <input class="form-control" id="concert-showDate" name="concert-showDate" type="date">
         </div>
       </div>
-      <label for='concert-band-id'>Select a band</label>
-      <select id='concert-band-id' name='concert-band-id' type='text'>
-        @foreach (var band in @Model["allBands"])
-        {
-          <option value='@band.GetId()'>@band.GetName()</option>
-        }
-      </select>
       <button type="submit" class="btn-wide">Add new concert</button>
     </form>
       <a href="/concerts"><p class="btn-wide">View all concerts</p></a>

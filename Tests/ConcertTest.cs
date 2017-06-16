@@ -28,8 +28,8 @@ namespace BandTracker
     public void Equals_ChecksObjectEquality_True()
     {
       //Arrange, Act
-      Concert firstConcert = new Concert(default(DateTime));
-      Concert secondConcert = new Concert(default(DateTime));
+      Concert firstConcert = new Concert(default(DateTime), 2);
+      Concert secondConcert = new Concert(default(DateTime), 2);
       //Assert
       Assert.Equal(firstConcert, secondConcert);
     }
@@ -37,7 +37,7 @@ namespace BandTracker
     public void Save_DoesSaveToDatabase_True()
     {
       //Arrange
-      Concert testConcert = new Concert(new DateTime(1987, 01, 01));
+      Concert testConcert = new Concert(new DateTime(1987, 01, 01), 2);
       testConcert.Save();
       //Act
       List<Concert> result = Concert.GetAll();
@@ -48,7 +48,7 @@ namespace BandTracker
     [Fact]
     public void Find_FindsConcertInDatabase_True()
     {
-      Concert testConcert = new Concert(new DateTime(1987, 01, 01));
+      Concert testConcert = new Concert(new DateTime(1987, 01, 01), 2);
       testConcert.Save();
 
       Concert foundConcert = Concert.Find(testConcert.GetId());

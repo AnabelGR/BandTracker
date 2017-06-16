@@ -306,8 +306,10 @@ namespace BandTracker.Objects
       {
         int concertId = rdr.GetInt32(0);
         DateTime concertShowDate = rdr.GetDateTime(1);
+        int concertVenueId = rdr.GetInt32(2);
 
-        Concert newConcert = new Concert(concertShowDate, concertId);
+
+        Concert newConcert = new Concert(concertShowDate, concertVenueId, concertId);
         concerts.Add(newConcert);
       }
 

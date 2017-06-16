@@ -9,11 +9,13 @@ namespace BandTracker.Objects
   {
     private int _id;
     private DateTime _showDate;
+    private int _venues_id;
 
-  public Concert(DateTime ShowDate, int Id = 0)
+  public Concert(DateTime ShowDate, int VenueId, int Id = 0)
   {
     _id = Id;
     _showDate = ShowDate;
+    _venues_id = VenueId;
   }
 
   public override bool Equals(System.Object otherConcert)
@@ -27,7 +29,8 @@ namespace BandTracker.Objects
       Concert newConcert = (Concert) otherConcert;
       bool idEquality = (this.GetId() == newConcert.GetId());
       bool showDateEquality = (this.GetShowDate() == newConcert.GetShowDate());
-      return (idEquality && showDateEquality);
+      bool venueIdEquality = (this.GetVenueId() == newConcert.GetVenueId());
+      return (idEquality && showDateEquality && venueIdEquality);
     }
   }
     public int GetId()
@@ -42,10 +45,14 @@ namespace BandTracker.Objects
     {
       return _showDate;
     }
-    // public void SetShowDate(DateTime ShowDate)
-    // {
-    //   _showDate = ShowDate;
-    // }
+    public int GetVenueId()
+    {
+      return _venues_id;
+    }
+    public void SetVenueId(int VenueId)
+    {
+      _venues_id = VenueId;
+    }
 
   public static void DeleteAll()
   {
@@ -69,8 +76,9 @@ namespace BandTracker.Objects
     {
       int concertId = rdr.GetInt32(0);
       DateTime concertShowDate = rdr.GetDateTime(1);
+      int concertVenueId = rdr.GetInt32(2);
 
-      Concert newConcert = new Concert(concertShowDate, concertId);
+      Concert newConcert = new Concert(concertShowDate, concertVenueId, concertId);
       allConcerts.Add(newConcert);
     }
 
@@ -89,11 +97,17 @@ namespace BandTracker.Objects
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("INSERT INTO concerts (showDate) OUTPUT INSERTED.id VALUES (@ConcertShowDate);", conn);
+      SqlCommand cmd = new SqlCommand("INSERT INTO concerts (showDate, venues_id) OUTPUT INSERTED.id VALUES (@ConcertShowDate, @ConcertVenueId);", conn);
       SqlParameter showDateParameter = new SqlParameter();
       showDateParameter.ParameterName = "@ConcertShowDate";
       showDateParameter.Value = this.GetShowDate();
+
+      SqlParameter venueIdParameter = new SqlParameter();
+      venueIdParameter.ParameterName = "@ConcertVenueId";
+      venueIdParameter.Value = this.GetVenueId();
+
       cmd.Parameters.Add(showDateParameter);
+      cmd.Parameters.Add(venueIdParameter);
 
       SqlDataReader rdr = cmd.ExecuteReader();
 
@@ -124,13 +138,15 @@ namespace BandTracker.Objects
 
       int foundConcertId = 0;
       DateTime foundConcertShowDate = default(DateTime);
+      int foundConcertVenueId = 0;
 
       while(rdr.Read())
       {
         foundConcertId = rdr.GetInt32(0);
         foundConcertShowDate = rdr.GetDateTime(1);
+        foundConcertVenueId = rdr.GetInt32(2);
       }
-      Concert foundConcert = new Concert(foundConcertShowDate, foundConcertId);
+      Concert foundConcert = new Concert(foundConcertShowDate, foundConcertVenueId, foundConcertId);
 
       if (rdr != null)
       {
