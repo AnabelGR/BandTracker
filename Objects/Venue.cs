@@ -212,24 +212,55 @@ namespace BandTracker.Objects
       return bands;
     }
 
-      public void Delete()
+    public void Delete()
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("DELETE FROM venues WHERE id = @VenueId; DELETE FROM venues_bands WHERE venues_id = @VenueId;", conn);
+      SqlParameter venueIdParameter = new SqlParameter();
+      venueIdParameter.ParameterName = "@VenueId";
+      venueIdParameter.Value = this.GetId();
+
+      cmd.Parameters.Add(venueIdParameter);
+      cmd.ExecuteNonQuery();
+
+      if (conn != null)
       {
-        SqlConnection conn = DB.Connection();
-        conn.Open();
+        conn.Close();
+      }
+    }
+    public void Update(string newName)
+    {
+      SqlConnection conn = DB.Connection();
+      conn.Open();
+      SqlCommand cmd = new SqlCommand("UPDATE venues SET name = @NewName OUTPUT INSERTED.name WHERE id = @VenueId;", conn);
 
-        SqlCommand cmd = new SqlCommand("DELETE FROM venues WHERE id = @VenueId; DELETE FROM venues_bands WHERE venues_id = @VenueId;", conn);
-        SqlParameter venueIdParameter = new SqlParameter();
-        venueIdParameter.ParameterName = "@VenueId";
-        venueIdParameter.Value = this.GetId();
+      SqlParameter newNameParameter = new SqlParameter();
+      newNameParameter.ParameterName = "@NewName";
+      newNameParameter.Value = newName;
+      cmd.Parameters.Add(newNameParameter);
 
-        cmd.Parameters.Add(venueIdParameter);
-        cmd.ExecuteNonQuery();
+      SqlParameter studentIdParameter = new SqlParameter();
+      studentIdParameter.ParameterName = "@VenueId";
+      studentIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(studentIdParameter);
 
-        if (conn != null)
-        {
-          conn.Close();
-        }
+      SqlDataReader rdr = cmd.ExecuteReader();
+      while(rdr.Read())
+      {
+        this._name = rdr.GetString(0);
       }
 
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
   }
 }

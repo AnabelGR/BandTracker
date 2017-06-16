@@ -99,5 +99,43 @@ namespace BandTracker
       Venue.DeleteAll();
       Band.DeleteAll();
     }
+    [Fact]
+    public void Delete_DeletesVenueAssociationsFromDatabase_VenueList()
+    {
+      //Arrange
+      Band testBand = new Band("Mystic John");
+      testBand.Save();
+
+      Venue testVenue = new Venue("Keller Auditorium");
+      testVenue.Delete();
+
+
+      //Act
+      testVenue.AddBand(testBand);
+      testVenue.Delete();
+
+      List<Venue> result = testBand.GetVenues();
+      List<Venue> test = new List<Venue> {};
+
+      //Assert
+      Assert.Equal(test, result);
+    }
+    [Fact]
+    public void Update_UpdatesVenueInDatabase_String()
+    {
+      //Arrange
+      string name = "Wonder Ballroom";
+      Venue testVenue = new Venue(name);
+      testVenue.Save();
+      string newName = "Revolution Hall";
+
+      //Act
+      testVenue.Update(newName);
+
+      string result = testVenue.GetName();
+
+      //Assert
+      Assert.Equal(newName, result);
+    }
   }
 }
