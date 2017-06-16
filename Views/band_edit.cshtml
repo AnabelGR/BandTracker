@@ -1,0 +1,15 @@
+@{
+  Layout="Shared/_Layout.cshtml";
+}
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h2>Edit band: @Model.GetName()</h2>
+    <form action="/band/edit/@Model.GetId()" method="post">
+      <input type="hidden" name="_method" value="PATCH">
+      <input name="band-id" type="hidden" value="@Model.GetId()">
+      <label for="band-name">Band name</label>
+      <input id="band-name" name="band-name" type="text">
+      <button class="btn" type="submit">Submit</button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+@{
+  Layout="Shared/_Layout.cshtml";
+}
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h2>Venues:</h2>
+    <hr />
+
+      @if (Model.Count != 0)
+      {
+        <div>
+          @foreach (var venue in Model)
+          {
+            <h3><a href="/venues/@venue.GetId()">@venue.GetName()</h3>
+            <a href="/venue/edit/@venue.GetId()"><p class="btn">Edit</p></a>
+            <a href="/venue/delete/@venue.GetId()"><p class="btn">Delete</p></a>
+          }
+        </div>
+      }
+      <hr />
+    <a href="/venues/new"><p class="btn-wide">add a new venue</p></a>
+  </div>
+</div>

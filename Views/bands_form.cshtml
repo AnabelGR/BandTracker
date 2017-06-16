@@ -1,0 +1,18 @@
+@{
+  Layout="Shared/_Layout.cshtml";
+}
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h1>Add a new band</h1>
+    <form class="form-horizontal" action="/bands/new" method="post">
+      <div class="form-group">
+        <label class="col-md-4" for="band-name">Band name:</label>
+        <div class="col-md-8">
+        <input class="form-control" id="band-name" name="band-name" type="text">
+        </div>
+      </div>
+      <button type="submit" class="btn-wide">Add new band</button>
+    </form>
+      <a href="/bands"><p class="btn-wide">View all bands</p></a>
+  </div>
+</div>

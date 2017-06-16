@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="/Content/CSS/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/Content/CSS/styles.css" rel="stylesheet" type="text/css">
+    <script src="/Content/JS/jquery-3.2.1.js" type="text/javascript"></script>
+    <script src="/Content/JS/scripts.js" type="text/javascript"></script>
+    <link href="https://fonts.googleapis.com/css?family=Faster+One|Dosis:500" rel="stylesheet">
+    <meta charset="utf-8">
+    <title>Band Tracker</title>
+  </head>
+  <body style="background-image: url(Content/IMG/tickets.jpg); background-size: cover">
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Band Tracker</h1><h1><small>For the ultimate groupie</small></h1>
+      </div>
+    </div>
+    <div class="container">
+      @RenderBody()
+      @Html.Partial("footer.cshtml")
+    </div>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+@{
+  Layout="Shared/_Layout.cshtml";
+}
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h1>Add a new venue</h1>
+    <form class="form-horizontal" action="/venues/new" method="post">
+      <div class="form-group">
+        <label class="col-md-4" for="venue-name">Venue name:</label>
+        <div class="col-md-8">
+        <input class="form-control" id="venue-name" name="venue-name" type="text">
+        </div>
+      </div>
+      <button type="submit" class="btn-wide">Add new venue</button>
+    </form>
+      <a href="/venues"><p class="btn-wide">View all venues</p></a>
+  </div>
+</div>
