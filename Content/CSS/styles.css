@@ -4,16 +4,7 @@ a {
 
 body {
   font-family: 'Dosis', sans-serif;
-}
-
-div#footer {
-    position:fixed;
-    bottom:0px;
-    left:0px;
-    width:100%;
-    color:#375458;
-    background:#375458;
-    padding:8px;
+  background-color: #537479;
 }
 
 li, ul {
@@ -28,25 +19,6 @@ small{
   float: left;
   width: 200px;
 }
-.jumbotron {
-  background-color: #0D1B1D !important;
-  color: #375458 !important;
-  font-family: 'Faster One', cursive;
-
-}
-
-.panel-default, .panel-body {
-  background-color: #c9dde0;
-  width: 600px;
-}
-
-.indexPage {
-  margin-left: 20px;
-}
-
-.index {
-  float: left;
-}
 
 .btn {
   background-color: #030606;
@@ -56,12 +28,6 @@ small{
   font-size: 16px;
   font-variant-caps: all-small-caps;
   padding: 2px;
-}
-
-.homebtn {
-  text-align: center;
-  font-size: 20px;
-  color: white;
 }
 
 .btn-wide {
@@ -75,6 +41,41 @@ small{
   padding-left: 6px;
 }
 
+.homebtn {
+  text-align: center;
+  font-size: 20px;
+  color: white;
+}
+
+.index {
+  float: left;
+}
+
+.indexPage {
+  margin-left: 20px;
+}
+
+.jumbotron {
+  background-color: #0D1B1D !important;
+  color: #375458 !important;
+  font-family: 'Faster One', cursive;
+}
+
+.panel-default, .panel-body {
+  background-color: #c9dde0;
+  width: 600px;
+}
+
 .student {
   margin-left: 15px;
+}
+
+#footer {
+  position:fixed;
+  bottom:0px;
+  left:0px;
+  width:100%;
+  color:#375458;
+  background:#375458;
+  padding:8px;
 }
