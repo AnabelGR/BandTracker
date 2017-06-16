@@ -137,6 +137,7 @@ namespace BandTracker
       Venue.DeleteAll();
       Band.DeleteAll();
       Concert.DeleteAll();
+      Goer.DeleteAll();
     }
   }
 }

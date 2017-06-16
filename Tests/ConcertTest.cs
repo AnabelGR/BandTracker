@@ -57,9 +57,10 @@ namespace BandTracker
     }
     public void Dispose()
     {
-      Concert.DeleteAll();
       Band.DeleteAll();
       Venue.DeleteAll();
+      Concert.DeleteAll();
+      Goer.DeleteAll();
     }
   }
 }
