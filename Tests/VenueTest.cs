@@ -24,10 +24,6 @@ namespace BandTracker
       //Assert
       Assert.Equal(0, result);
     }
-    public void Dispose()
-    {
-      Venue.DeleteAll();
-    }
     [Fact]
     public void Equals_ChecksObjectEquality_True()
     {
@@ -56,8 +52,52 @@ namespace BandTracker
       testVenue.Save();
 
       Venue foundVenue = Venue.Find(testVenue.GetId());
-    
+
       Assert.Equal(testVenue, foundVenue);
+    }
+    [Fact]
+    public void AddBand_AddBandToVenue_True()
+    {
+      //Arrange
+      Venue testVenue = new Venue("Star Theater");
+      testVenue.Save();
+
+      Band firstBand = new Band("GWAR");
+      Band secondBand = new Band("Faith No More");
+      firstBand.Save();
+      secondBand.Save();
+      //Add
+      testVenue.AddBand(firstBand);
+      testVenue.AddBand(secondBand);
+
+      List<Band> result = testVenue.GetBands();
+      List<Band> testList = new List<Band> {firstBand, secondBand};
+      //Assert
+      Assert.Equal(testList, result);
+    }
+
+    [Fact]
+    public void GetBands_ReturnAllVenuesBands_True()
+    {
+      //Arrange
+      Venue testVenue = new Venue("Dantes");
+      testVenue.Save();
+
+      Band testBand1 = new Band("This Mortal Coil");
+      Band testBand2 = new Band("KMFDM");
+      testBand1.Save();
+      testBand2.Save();
+      //Act
+      testVenue.AddBand(testBand1);
+      List<Band> savedBands = testVenue.GetBands();
+      List<Band> testList = new List<Band>{testBand1};
+      //Assert
+      Assert.Equal(testList, savedBands);
+    }
+    public void Dispose()
+    {
+      Venue.DeleteAll();
+      Band.DeleteAll();
     }
   }
 }
