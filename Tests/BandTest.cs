@@ -94,11 +94,6 @@ namespace BandTracker
       //Assert
       Assert.Equal(testList, savedVenues);
     }
-    public void Dispose()
-    {
-      Band.DeleteAll();
-      Venue.DeleteAll();
-    }
     [Fact]
     public void Delete_DeletesBandAssociationsFromDatabase_BandList()
     {
@@ -136,6 +131,12 @@ namespace BandTracker
 
       //Assert
       Assert.Equal(newName, result);
+    }
+    public void Dispose()
+    {
+      Band.DeleteAll();
+      Venue.DeleteAll();
+      Concert.DeleteAll();
     }
   }
 }
