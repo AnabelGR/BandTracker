@@ -120,5 +120,22 @@ namespace BandTracker
       //Assert
       Assert.Equal(test, result);
     }
+    [Fact]
+    public void Update_UpdatesBandInDatabase_String()
+    {
+      //Arrange
+      string name = "ACDC";
+      Band testBand = new Band(name);
+      testBand.Save();
+      string newName = "The The";
+
+      //Act
+      testBand.Update(newName);
+
+      string result = testBand.GetName();
+
+      //Assert
+      Assert.Equal(newName, result);
+    }
   }
 }
