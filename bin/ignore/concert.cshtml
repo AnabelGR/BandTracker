@@ -1,0 +1,19 @@
+
+@{
+  Layout="Shared/_Layout.cshtml";
+}
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h2>Concert: @Model["concert"].GetShowDate()</h2>
+    <hr />
+    @if (@Model["bandConcerts"].Count != 0)
+    {
+      <ul>
+        @foreach (var band in @Model["bandConcerts"])
+        {
+          <li>@band.GetName()</li>
+        }
+      </ul>
+    }
+  </div>
+</div>

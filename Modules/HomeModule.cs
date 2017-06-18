@@ -21,10 +21,6 @@ namespace BandTracker
         List<Venue> AllVenues = Venue.GetAll();
         return View["venues.cshtml", AllVenues];
       };
-      Get["/concerts"] = _ => {
-        List<Concert> AllConcerts = Concert.GetAll();
-        return View["concerts.cshtml", AllConcerts];
-      };
       Get["/venues/new"] = _ => {
         return View["venues_form.cshtml"];
       };
@@ -42,24 +38,12 @@ namespace BandTracker
         newBand.Save();
         return View["index.cshtml"];
       };
-      Get["/concerts/new"] = _ => {
-        return View["concerts_form.cshtml"];
-      };
-      Post["/concerts/new"] = _ => {
-        Concert newConcert = new Concert(Request.Form["concert-showDate"], Request.Form["venue-id"]);
-        newConcert.Save();
-        return View["index.cshtml"];
-      };
       Post["/venue/delete"] = _ => {
         Venue.DeleteAll();
         return View["index.cshtml"];
       };
       Post["/bands/delete"] = _ => {
         Band.DeleteAll();
-        return View["index.cshtml"];
-      };
-      Post["/concerts/delete"] = _ => {
-        Concert.DeleteAll();
         return View["index.cshtml"];
       };
       Get["venues/{id}"] = parameters => {
@@ -101,15 +85,6 @@ namespace BandTracker
         SelectedBand.Delete();
         return View["index.cshtml"];
       };
-      Get["concert/delete/{id}"] = parameters => {
-       Concert SelectedConcert = Concert.Find(parameters.id);
-       return View["concert_delete.cshtml", SelectedConcert];
-      };
-      Delete["concert/delete/{id}"] = parameters => {
-        Concert SelectedConcert = Concert.Find(parameters.id);
-        SelectedConcert.Delete();
-        return View["index.cshtml"];
-      };
       Post["band/add_venue"] = _ => {
         Venue venue = Venue.Find(Request.Form["venue-id"]);
         Band band = Band.Find(Request.Form["band-id"]);
@@ -120,18 +95,6 @@ namespace BandTracker
         Venue venue = Venue.Find(Request.Form["venue-id"]);
         Band band = Band.Find(Request.Form["band-id"]);
         venue.AddBand(band);
-        return View["index.cshtml"];
-      };
-      Post["concert/add_band"] = _ => {
-        Band band = Band.Find(Request.Form["band-id"]);
-        Concert concert = Concert.Find(Request.Form["concert-id"]);
-        concert.AddBand(band);
-        return View["index.cshtml"];
-      };
-      Post["band/add_concert"] = _ => {
-        Band band = Band.Find(Request.Form["band-id"]);
-        Concert concert = Concert.Find(Request.Form["concert-id"]);
-        band.AddConcert(concert);
         return View["index.cshtml"];
       };
       Get["venue/edit/{id}"] = parameters => {
@@ -150,15 +113,6 @@ namespace BandTracker
       Patch["band/edit/{id}"] = parameters => {
         Band SelectedBand = Band.Find(parameters.id);
         SelectedBand.Update(Request.Form["band-name"]);
-        return View["index.cshtml"];
-      };
-      Get["Concert/edit/{id}"] = parameters => {
-        Concert selectedConcert = Concert.Find(parameters.id);
-        return View["Concert_edit.cshtml", selectedConcert];
-      };
-      Patch["Concert/edit/{id}"] = parameters => {
-        Concert SelectedConcert = Concert.Find(parameters.id);
-        SelectedConcert.Update(Request.Form["Concert-name"]);
         return View["index.cshtml"];
       };
     }
